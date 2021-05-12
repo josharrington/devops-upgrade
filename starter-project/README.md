@@ -25,6 +25,7 @@ Your service should have the following basic parts, however:
 1. Should talk HTTP. This ensures the service you build will be ready for the next parts. It also let's anybody interact with it!
 2. Should be stored in a Github repo.
 3. Should follow the principals of the [twelve factor app](https://12factor.net/). Importantly, never commit credentials to your repo!
+4. Intentionally leave out one or two features you would like to implement. We'll follow up on those later. Create issues in Github to track the progress of those missing features.
 
 If you are stuck on what to build, here are a few project ideas to get you started. Feel free to modify them as you wish. Or build multiple to start getting comfortable!
 
