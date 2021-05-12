@@ -4,6 +4,7 @@ This repo is a collection of tutorials and advice on how to become a DevOps Engi
 
 Topics:
 - [Starter Project](starter-project/)
+- [Resume Advice](resume-advice/)
 - [FAQ](#FAQ)
 
 ## FAQ
