@@ -2,11 +2,11 @@
 
 Because a DevOps Engineer is not an entry-level position, you need to be able to demonstrate your skills to employers to make it in this field. You will need to show off your skills in systems management, networking, development, and release management. The projects in this repo will give you some foundations to build on and let you build a portfolio to exhibit your new-found skillset.
 
-This guide is *not* a comprehensive guide on everything you need to know, it is only a starting point.
+This is *not* a comprehensive guide on everything you need to know, it is only a starting point.
 
 # Part 0 - Requirements
 
-1. Get a Github account. You need somewhere to save your code and to show it off! If you've never used git before,
+1. Get a Github account. You need somewhere to save your code and to show it off! If you've never used git before, [start here](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners).
 2. Get a good code editor. If you don't already have a favorite, VS Code is a good choice and works on all platforms.
 3. Set aside some time several times per week to work on this. Don't let it stagnate.
 4. Any computer you have access to will be able to perform all these steps. You do not need special equipment.
