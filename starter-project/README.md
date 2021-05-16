@@ -109,6 +109,7 @@ Using [Github Actions](https://github.com/features/actions), perform the followi
     - Ensure tags that do not fit the schema you set (in the above example, tags starting with `v`) do not deploy.
     - The deployment methodology between each company and team may differ. For example, a merge to master may deploy to a development environment. Or a pull request may deploy that branch to an entirely new environment created just for that PR. For now, keep it simple.
 4. For this project, simply run ansible as your deployment step. You should be able to define in your ansible vars which tag from your git repo to deploy.
+    - Ensure any secrets (ssh keys, api keys) are not available to the public. Ensure these keys are not available to any CI tools (including actions) in pull requests. This prevents credential leakage.
 
 # Part 5 - Monitoring and Logging
 
