@@ -2,7 +2,7 @@
 
 Because a DevOps Engineer is not an entry-level position, you need to be able to demonstrate your skills to employers to make it in this field. You will need to show off your skills in systems management, networking, development, and release management. The projects in this repo will give you some foundations to build on and let you build a portfolio to exhibit your new-found skillset.
 
-This is *not* a comprehensive guide on everything you need to know, it is only a starting point.
+This is *not* a comprehensive guide on everything you need to know, it is only a rough outline to get you familiar with much of the typical work in this field.
 
 # Part 0 - Requirements
 
@@ -39,7 +39,7 @@ Ensure the project is well documented and includes a README to introduce readers
 
 # Part 2 - Deploy It Manually
 
-So you have a web service you've built on your own. Great! Now you need to deploy it somewhere and make it accessible to everyone.
+So you have a web service you've built on your own? Great! Now you need to deploy it somewhere and make it accessible to everyone.
 
 NOTE: This will cost money. Ensure you understand the limits of the free tier of the provider you choose and turn off or delete any resources you create when you are finished with them.
 
@@ -57,13 +57,64 @@ NOTE: This will cost money. Ensure you understand the limits of the free tier of
 
 # Part 3 - Infrastructure as Code
 
-TODO
+Delete everything you just deployed manually. All the servers, all the network configuration. Everything. We will rebuild!
 
-# Part 4 - Continuous Integration and Deployment
+We're going to take all the lessons learned from Part 2 and make them repeatable, auditable, and executable. We're talking about Infrastructure as Code (IaC)! If you're not familiar with IaC, go read [this article](https://stackify.com/what-is-infrastructure-as-code-how-it-works-best-practices-tutorials/).
 
-TODO
+Generally speaking, in any modern deployment, you will have two "tiers" of IaC.
+- One for configuring the infrastructure layer -- everything below the server OS. This includes networking, the servers themselves, security controls, databases, third party services, and so on. Typically, this will be one or more of the following tools:
+  - Terraform
+  - AWS Cloudformation
+  - GCP Deployment Manager
+  - Azure Resource Manager
+- Another for configuring the deployment targets. This includes, but is not limited to, the server OS and kubernetes objects. Typical tools include:
+  - Ansible
+  - Chef
+  - Puppet
+  - Helm
 
-# Part 5 - Document, Document, Document
+For your project, you will use [Terraform](https://www.terraform.io/) and [Ansible](https://www.terraform.io/). These are free tools that have wide community and enterprise support. Whichever cloud provider you chose to work with will likely have support in Terraform.
+
+1. Create separate repos for your terraform and ansible projects.
+2. Start working on terraform. Create all the infrastructure-level components from Part 2. Networking, servers, etc. If your project uses a database, use your cloud provider's hosted database offering.
+    - It's okay to _not_ configure the OS of your server at this stage. Just get an empty server deployed for now.
+    - Your goal should be to never have to touch the GUI in your cloud provider's console, save setting up some initial credentials to allow access from Terraform.
+    - Keep your terraform code reasonably simple at this stage. Avoid using third-party modules so you can learn how Terraform and your cloud provider work.
+3. Now work on ansible. You will need to configure the entire OS from Ansible to get your software deployed. To keep it simple, ansible should download your project you developed in Part 1 from github.
+    - Your initial setup can use a static inventory file -- some IP addresses or hostnames you manually enter into a text file.
+    - Configure the OS with the appropriate software to run your application
+    - Consider applying various security settings based on the CIS Benchmark for your OS of choice.
+    - The software you created in Part 1 should start automatically. You shouldn't need to manually log in to the server (except during troubleshooting).
+    - Once you are happy with the configuration, switch to using dynamic inventory. This will be important later as the IP addresses and hostnames of our servers will not be known in advance. This is the case for most modern software deployments.
+      - For AWS EC2, see https://devopscube.com/setup-ansible-aws-dynamic-inventory/
+      - For DigitalOcean, see https://www.digitalocean.com/community/tools/do-ansible-inventory
+
+When everything is configured and you can successfully access your site, run `terraform destroy`. Take a deep breath. Then run `terraform apply` and apply ansible to your new servers. If you did this correctly, your new site should be running again with just a couple of commands from your local development environment.
+
+# Part 4 - Continuous Integration and Automated Deployment
+
+During development of modern software, it is common to use (git flow)[https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow] or some variant of it for teams to collaborate on changes to their projects.
+
+When changes are made to a git repo, we can automatically perform some actions based on what is being done. Every major git repo host will support either their own Continuous Integration tooling or allow you to hook in your own (such as Jenkins). Your goal should be to never log in to a server yourself to deploy new code.
+
+Using [Github Actions](https://github.com/features/actions), perform the following:
+
+1. When a pull request is submitted against your project's repository, run various tests against your code to verify it is not broken. For example:
+    - Unit tests
+    - Code linting tests (black for Python, mypy for python type checking)
+    - Security auditing tests (bandit for python)
+2. When a pull request is approved and merged to the main (or master) branch, perform those tests again.
+3. When a tag is pushed to your repo, deploy the software to your hosting environment.
+    - There are a few ways to go about this. For now, just use a basic semantic versioning schema. For example: pushing tag `v0.1.0` would deploy to your hosting environment.
+    - Ensure tags that do not fit the schema you set (in the above example, tags starting with `v`) do not deploy.
+    - The deployment methodology between each company and team may differ. For example, a merge to master may deploy to a development environment. Or a pull request may deploy that branch to an entirely new environment created just for that PR. For now, keep it simple.
+4. For this project, simply run ansible as your deployment step. You should be able to define in your ansible vars which tag from your git repo to deploy.
+
+# Part 5 - Monitoring and Logging
+
+# Part 6 - High Availability and Disaster Recovery
+
+# Part 7 - Document, Document, Document
 
 At the end of your project, anyone should be able to view your repositories and their documentation and spin up their own copy of your service in its entirety without any additional assistance. If you intend for potential employers to understand what you did, you need to make it easy and obvious for them.
 
