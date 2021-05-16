@@ -93,7 +93,9 @@ When everything is configured and you can successfully access your site, run `te
 
 # Part 4 - Continuous Integration and Automated Deployment
 
-During development of modern software, it is common to use (git flow)[https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow] or some variant of it for teams to collaborate on changes to their projects.
+Read about [Continuous Integration](https://www.cloudbees.com/continuous-delivery/continuous-integration).
+
+During development of modern software, it is common to use [git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) or some variant of it for teams to collaborate on changes to their projects.
 
 When changes are made to a git repo, we can automatically perform some actions based on what is being done. Every major git repo host will support either their own Continuous Integration tooling or allow you to hook in your own (such as Jenkins). Your goal should be to never log in to a server yourself to deploy new code.
 
