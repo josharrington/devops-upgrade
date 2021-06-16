@@ -10,6 +10,8 @@ A few tips:
 3. At the bottom of each section will be a list of acceptance criteria. You should do your best to meet every item.
 4. Feel free to [submit an issue](https://docs.github.com/en/github/managing-your-work-on-github/creating-an-issue) to this repo for assistance.
 
+At the end of this project, you will have a fully built, cloud native service using modern tools and technologies. You will be able to show it off to employers to give yourself a leg up over other candidates. Let's get started!
+
 # Part 0 - Requirements
 
 1. Get a Github account. You need somewhere to save your code and to show it off! If you've never used git before, [start here](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners). Feel free to switch out for Gitlab if you prefer, just remember to adjust the instructions below to your needs.
@@ -203,6 +205,8 @@ Part 5 had a lot of interesting goodies about monitoring your _servers_ but noth
 
 If you are using Python+Flask, you could use https://pypi.org/project/prometheus-flask-exporter/.
 
+Additionally, we'll want to have a dashboard full of database metrics if you chose to use a database in your project. Use a Prometheus exporter appropriate for your database vendor. For example, you can use [Postgres Exporter](https://github.com/prometheus-community/postgres_exporter) for PostgreSQL databases.
+
 ### Acceptance Criteria
 1. An interesting dashboard with your application's metrics. Should include at a minimum:
     - Request latency for each route
@@ -210,18 +214,51 @@ If you are using Python+Flask, you could use https://pypi.org/project/prometheus
     - Total requests per minute
     - Memory usage of the application server process
 
-# Part 7 - High Availability and Disaster Recovery
+# Part 7 - High Availability
 
-TODO
+In production, a service must be able to withstand an outage of a single component of the stack. This is particularly true in many cloud scenarios where a single server can be destroyed at a moment's notice.
 
-# Part 8 - Document, Document, Document
+Perform the following:
+
+1. Deploy two or more identical servers that hosts your service. If you're on a major cloud provider such as AWS, ensure the server can automatically be recovered in the event of a server failure. For AWS, this means using an autoscaling group.
+2. Set up a load balancer to check the health of your service on each server and split the traffic between the two servers.
+3. Configure your https certificate to terminate at the load balancer instead of at the individual server. If you're using AWS, use ACM.
+4. If your service requires a login or has any session, ensure that my request can be serviced by _any_ server behind your load balancer. (Investigate where the best place to store session information is for your particular framework and language. Redis or your DB are good options)
+5. Ensure no state on any particular server lives outside of a single request. This means any file uploads are moved off the server after processing, for example.
+
+You should now have a robust service that can withstand a single application server outage. Destroy to your heart's content!
+
+Setting this up isn't just useful for server outages, however. You can take advantage of the high availability to deploy new versions of your application in a rolling deployment. If you're using an autoscaling group in AWS, this would mean either creating a new autoscaling group or modifying the parameters of the autoscaling group and issuing an instance refresh. If your particular cloud provider does not have something akin to an autoscaling group, this can be an ansible playbook or script that fetches the existing hosts dynamically and installs the new software onto each server. Make sure the servers are not receiving traffic when this occurs, take them out of the load balancer first!
+
+### Acceptance Criteria
+1. Your service can withstand a single server outage and not be impacted.
+2. Your application logs should contain the _real_ ip of the client and not of the load balancer. (See X-Forwarded-For headers)
+3. You can deploy a new version of your service without any downtime.
+
+# Part 8 - Disaster Recovery
+
+Now that we have a resilient service, we have to talk about the part that was blatantly left out: the database. What happens if _this_ server fails irrecoverably? You lose all your customers!
+
+
+You need to have a backup plan in place for your database (if your service requires one) and be able to recover from a backup.
+
+Perform the following:
+
+1. Using your cloud vendor's native tools, craft a plan to back up your database server on a nightly, weekly, and monthly basis.
+2. Manually trigger a backup or wait for an automatic one to occur.
+3. Delete your database.
+4. Recover your database.
+5. Document the backup and recovery procedure. Ensure you can use your infrastructure as code tooling to perform it.
+6. Consider how you would send those backups to somewhere else in case you ever lost access to your cloud account.
+
+Disaster can strike your service at many different levels and you should be aware of the ways to recover from them. Not only could you lose your database but you could lose access to your cloud accounts, have your cloud accounts deleted, forget to renew your credit card information, the whole gambit.
+
+Your infrastructure as code is a critical part of disaster recovery. It is effectively executable documentation on how to deploy your services and infrastructure. In the event you lost all of your infrastructure, how long would it take you to recover today?
+
+### Acceptance Criteria
+1. You have backup plans configured for your database.
+2. Your backup and recovery procedures are documented.
+# Part 9 - Document, Document, Document
 
 At the end of your project, anyone should be able to view your repositories and their documentation and spin up their own copy of your service in its entirety without any additional assistance. If you intend for potential employers to understand what you did, you need to make it easy and obvious for them.
 
-# How do I stand out?
-
-Now that you have a service that is deployed and showcased, how do you differentiate yourself from the other people doing the same?
-
-- Add unit tests and/or to your code
-- Make your website look pretty.
-- TODO
