@@ -2,7 +2,7 @@
 
 Because a DevOps Engineer is not an entry-level position, you need to be able to demonstrate your skills to employers to make it in this field. You will need to show off your skills in systems management, networking, development, and release management. The projects in this repo will give you some foundations to build on and let you build a portfolio to exhibit your new-found skillset.
 
-This is *not* a comprehensive guide on everything you need to know, it is only a rough outline to get you familiar with much of the typical work in this field.
+This is *not* a comprehensive guide on everything you need to know, it is only a rough outline to get you familiar with much of the typical work in this field. It is left intentionally vague in some cases to encourage exploration and self-reliance. Please feel free to open an issue if something is too vague or unapproachable.
 
 A few tips:
 1. Read the section in its entirety before starting on it.
@@ -23,3 +23,17 @@ At the end of this project, you will have a fully built, cloud native service us
 ---
 
 [Continue to Part 1](part1.md)
+
+---
+
+# Table of Contents
+
+- [Part 1 - Build Something](part1.md)
+- [Part 2 - Deploy it Manually](part2.md)
+- [Part 3 - Infrastructure as Code](part3.md)
+- [Part 4 - Continuous Integration and Automated Deployment](part4.md)
+- [Part 5 - Monitoring and Logging](part5.md)
+- [Part 6 - Extending your dashboards with service metrics](part6.md)
+- [Part 7 - High Availability](part7.md)
+- [Part 8 - Disaster Recovery](part8.md)
+- [Part 9 - Document, Document, Document](part9.md)
